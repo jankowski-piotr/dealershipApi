@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role',
     ];
 
     /**
@@ -37,4 +37,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    /**
+     * Validation rules.
+     *
+     * @var array
+     */
+    public static $validationRules = [
+        'name' => 'required|max:55',
+        'email' => 'email|required|unique:users',
+        'password' => 'required|confirmed',
+        'role' => 'required|in:admin,client,employee'
+    ];
+
+        /**
+     * Accepted roles.
+     *
+     * @var array
+     */
+    public static $acceptedRoles = ['admin', 'client', 'employee'];
 }
