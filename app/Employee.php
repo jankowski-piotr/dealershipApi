@@ -15,14 +15,16 @@ class Employee extends User
     protected $table = 'users';
 
     /**
-     * The "booted" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
-    protected static function booted()
+    public static function boot()
     {
-        static::addGlobalScope('role', function (Employee $employee) {
-            $employee->where('role', 'employee');
+        parent::boot();
+        // select only employees for each query
+        static::addGlobalScope(function ($query) {
+            $query->where('users.role', 'employee');
         });
     }
 

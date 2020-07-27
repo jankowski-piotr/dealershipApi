@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Client extends User
 {
@@ -14,14 +15,16 @@ class Client extends User
     protected $table = 'users';
     
     /**
-     * The "booted" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
-    protected static function booted()
+    public static function boot()
     {
-        static::addGlobalScope('role', function (Client $client) {
-            $client->where('role', 'client');
+        parent::boot();
+        // select only clients for each query
+        static::addGlobalScope(function ($query) {
+            $query->where('users.role', 'client');
         });
     }
     public function orders()
